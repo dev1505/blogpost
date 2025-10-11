@@ -1,18 +1,16 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useBlog } from '@/contexts/BlogContext';
 import { Navbar } from '@/components/Navbar';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Clock } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeHighlight from 'rehype-highlight';
+import { Button } from '@/components/ui/button';
+import { useBlog } from '@/contexts/BlogContext';
+import MDEditor from '@uiw/react-md-editor';
 import 'highlight.js/styles/github-dark.css';
+import { ArrowLeft, Clock, FilePenLine } from 'lucide-react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const PostDetail = () => {
   const { id } = useParams();
-  const { getPostById } = useBlog();
   const navigate = useNavigate();
+  const { getPostById } = useBlog();
   const post = getPostById(id || '');
 
   if (!post) {
@@ -36,17 +34,28 @@ const PostDetail = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      
+
       <main className="container mx-auto px-4 py-8 max-w-4xl">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => navigate(-1)}
-          className="mb-6"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back
-        </Button>
+        <div className='flex justify-between'>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate(-1)}
+            className="mb-6"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate(`/edit/post/${id}`)}
+            className="mb-6 bg-blue-300"
+          >
+            <FilePenLine />
+            Edit
+          </Button>
+        </div>
 
         <article className="prose prose-lg dark:prose-invert max-w-none">
           <div className="mb-8">
@@ -57,7 +66,7 @@ const PostDetail = () => {
                 </Badge>
               ))}
             </div>
-            
+
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
               {post.title}
             </h1>
@@ -78,14 +87,8 @@ const PostDetail = () => {
               </div>
             </div>
           </div>
-
           <div className="prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-code:text-primary prose-pre:bg-muted prose-li:text-foreground prose-a:text-primary hover:prose-a:text-primary/80">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeHighlight]}
-            >
-              {post.content}
-            </ReactMarkdown>
+            <MDEditor.Markdown source={post?.content} />
           </div>
         </article>
       </main>

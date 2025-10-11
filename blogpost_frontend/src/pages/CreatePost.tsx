@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useBlog } from '@/contexts/BlogContext';
 import { Navbar } from '@/components/Navbar';
@@ -10,14 +10,23 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft } from 'lucide-react';
 import MDEditor from '@uiw/react-md-editor';
+import NotFound from './NotFound';
 
 const CreatePost = () => {
   const { user } = useAuth();
-  const { addPost } = useBlog();
+  const { addPost, getPostById } = useBlog();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [content, setContent] = useState('');
+
+  const { id } = useParams();
+  const post = getPostById(id || '');
+
+  if (id && !post) {
+    return (<NotFound />)
+  }
+
+  const [content, setContent] = useState(post?.content);
 
   if (!user) {
     navigate('/auth');
@@ -61,7 +70,7 @@ const CreatePost = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      
+
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         <Button
           variant="ghost"
@@ -87,6 +96,7 @@ const CreatePost = () => {
                   placeholder="Enter your post title..."
                   required
                   className="text-lg"
+                  value={post?.title}
                 />
               </div>
 
@@ -96,6 +106,7 @@ const CreatePost = () => {
                   id="tags"
                   name="tags"
                   placeholder="React, JavaScript, Web Development"
+                  value={post?.tags?.join(", ")}
                 />
               </div>
 
@@ -113,7 +124,7 @@ const CreatePost = () => {
 
               <div className="flex gap-3">
                 <Button type="submit" disabled={isSubmitting} className="flex-1">
-                  {isSubmitting ? 'Publishing...' : 'Publish Post'}
+                  {isSubmitting ? 'Publishing...' : id ? 'Edit Post' : 'Publish Post'}
                 </Button>
                 <Button
                   type="button"
