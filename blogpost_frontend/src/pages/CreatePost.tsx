@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Sparkles } from 'lucide-react';
 import MDEditor from '@uiw/react-md-editor';
 import NotFound from './NotFound';
 
@@ -67,27 +67,57 @@ const CreatePost = () => {
     setIsSubmitting(false);
   };
 
+  const handleGenerateContent = () => {
+    const title = document.getElementById("title")?.value | "";
+    const tags = document.getElementById("tags")?.value | "";
+    if (!title) {
+      toast({
+        title: 'Add Field',
+        description: 'Please add Title and Tags to generate content relative to the topic',
+        toastType: 'warning',
+      });
+    }
+    else if (!tags) {
+      toast({
+        title: 'Add Field',
+        description: 'Please add Tags to generate content relative to the topic',
+        toastType: 'warning',
+      });
+    }
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
 
       <main className="container mx-auto px-4 py-8 max-w-4xl">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => navigate(-1)}
-          className="mb-6"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back
-        </Button>
+        <div className='flex justify-between'>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate(-1)}
+            className="mb-6"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="mb-6 bg-blue-200"
+            onClick={() => handleGenerateContent()}
+          >
+            <Sparkles />
+            Generate From AI
+          </Button>
+        </div>
 
         <Card>
           <CardHeader>
             <CardTitle className="text-3xl">Create New Post</CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} id='createPostForm' className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="title">Title</Label>
                 <Input
