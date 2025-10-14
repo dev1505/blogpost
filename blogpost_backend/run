@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+source /workspaces/blogpost/blogpost_backend/.venv/bin/activate
+uvicorn main:app --reload
