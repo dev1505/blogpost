@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, Response, Request
+from fastapi import FastAPI, Depends, Response, Request, APIRouter
 import os
 from dotenv import load_dotenv
 from contextlib import asynccontextmanager
@@ -35,6 +35,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+router = APIRouter()
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -47,50 +49,56 @@ app.add_middleware(
 )
 
 
-@app.post("/login")
+@router.post("/login")
 def login(user: User_Serializer, db=Depends(database)):
     return AuthService.login_service(user, db)
 
 
-@app.post("/register")
+@router.post("/register")
 def register(user: User_Serializer, db=Depends(database)):
     return AuthService.signup_service(user, db)
 
 
-@app.get("/logout")
+@router.get("/logout")
 def logout(request: Request, response: Response):
     return AuthService.logout_service(request=request, response=response)
 
 
-@app.get("/refresh", response_model=Token_Serializer)
+@router.get("/refresh", response_model=Token_Serializer)
 def refresh(request: Request, db=Depends(database)):
     return AuthService.refresh_token_service(db=db, request=request)
 
 
-@app.post("/create/blog", response_model=Blog_Create)
+@router.post("/create/blog", response_model=Blog_Create)
 def create_blog(
     blogs: Blog_Create, db=Depends(database), user=Depends(AuthService.verify_user)
 ):
     return UserService.create_blog(blogs=blogs, db=db, user=user)
 
 
-@app.post("/generate/blog", response_model=Blog_Create)
+@router.post("/generate/blog", response_model=Blog_Create)
 def generate_blog(
     blogs: Blog_Generate, db=Depends(database), user=Depends(AuthService.verify_user)
 ):
     return UserService.generate_blog(blogs=blogs, db=db, user=user)
 
 
-@app.get("/get/all/blogs")
+@router.get("/get/all/blogs")
 def get_blogs(db=Depends(database)):
     return UserService.all_blogs(db=db)
 
 
-@app.get("/get/user/blogs")
+@router.get("/get/user/blogs")
 def get_blogs(db=Depends(database), user=Depends(AuthService.verify_user)):
     return UserService.get_user_blogs(db=db, user=user)
 
 
-@app.get("/get/user")
+@router.get("/get/user")
 def get_blogs(user=Depends(AuthService.verify_user)):
-    return user
+    return {
+        "data": user,
+        "success": True,
+    }
+
+
+app.include_router(router, prefix="/api")

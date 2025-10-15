@@ -17,43 +17,43 @@ const Auth = () => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
-    const success = await login(email, password);
-    
-    if (success) {
+    const response = await login(email, password);
+
+    if (response?.success) {
       toast({
         title: 'Welcome back!',
         description: 'You have successfully logged in.',
       });
       navigate('/');
     }
-    
+
     setIsLoading(false);
   };
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
-    const name = formData.get('username') as string;
+    const username = formData.get('username') as string;
 
-    const success = await signup(email, password, name);
-    
-    if (success) {
+    const response = await signup(email, password, username);
+
+    if (response?.success) {
       toast({
         title: 'Account created!',
         description: 'Welcome to BlogSpace.',
       });
       navigate('/');
     }
-    
+
     setIsLoading(false);
   };
 
@@ -70,7 +70,7 @@ const Auth = () => {
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="login">
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-2">
@@ -98,16 +98,16 @@ const Auth = () => {
                 </Button>
               </form>
             </TabsContent>
-            
+
             <TabsContent value="signup">
               <form onSubmit={handleSignup} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signup-name">Username</Label>
                   <Input
                     id="username"
-                    name="name"
+                    name="username"
                     type="text"
-                    placeholder="John Doe"
+                    placeholder="devshah"
                     required
                   />
                 </div>

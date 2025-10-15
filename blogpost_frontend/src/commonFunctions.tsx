@@ -28,15 +28,15 @@ export async function CommonApiCall({ type = "get", payload = {}, url }: ApiResq
         return response_data
     } catch (response_error) {
         if (response_error?.status === 401) {
-            // try {
-            //     const response = await axios.get(fastapi_backend_url + "/refresh", { withCredentials: true });
-            //     const response_data = response.data;
-            //     if (response_data.success) {
-            //         window.location.href = "/"
-            //     }
-            // } catch (error) {
-            //     window.location.href = "/auth";
-            // }
+            try {
+                const response = await axios.get(fastapi_backend_url + "/refresh", { withCredentials: true });
+                const response_data = response.data;
+                if (response_data.success) {
+                    window.location.href = "/"
+                }
+            } catch (error) {
+                window.location.href = "/auth";
+            }
         }
         return false;
     }

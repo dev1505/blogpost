@@ -58,8 +58,8 @@ class AuthService:
     def set_cookie_response(access_token, refresh_token):
         response = JSONResponse(
             {
-                "access_token": access_token,
-                "refresh_token": refresh_token,
+                "message": "Successfully logged in",
+                "success": True,
             }
         )
 
@@ -67,22 +67,20 @@ class AuthService:
             key="access_token",
             value=access_token,
             httponly=True,
-            secure=True,
+            secure=False,
             samesite="lax",
             max_age=ACCESS_TOKEN_EXPIRE_HOURS * 60 * 60,
             path="/",
-            domain="https://effective-couscous-q59v65p6wgq2rj9-8080.app.github.dev",
         )
 
         response.set_cookie(
             key="refresh_token",
             value=refresh_token,
             httponly=True,
-            secure=True,
+            secure=False,
             samesite="lax",
             max_age=REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60,
             path="/",
-            domain="https://effective-couscous-q59v65p6wgq2rj9-8080.app.github.dev",
         )
 
         return response

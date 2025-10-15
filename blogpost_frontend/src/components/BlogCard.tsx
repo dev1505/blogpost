@@ -9,7 +9,7 @@ interface BlogCardProps {
 }
 
 export const BlogCard = ({ post }: BlogCardProps) => {
-  const formattedDate = new Date(post.createdAt).toLocaleDateString('en-US', {
+  const formattedDate = new Date(post.post_date).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
@@ -33,9 +33,9 @@ export const BlogCard = ({ post }: BlogCardProps) => {
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
-                {post.author.name.charAt(0).toUpperCase()}
+                {post.username.charAt(0).toUpperCase()}
               </div>
-              <span>{post.author.name}</span>
+              <span>{post.username}</span>
             </div>
             <div className="flex items-center gap-3">
               <span>{formattedDate}</span>

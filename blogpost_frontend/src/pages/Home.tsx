@@ -1,14 +1,21 @@
 import { Navbar } from '@/components/Navbar';
 import { BlogCard } from '@/components/BlogCard';
-import { useBlog } from '@/contexts/BlogContext';
+import { getAllBlogs, useBlog } from '@/contexts/BlogContext';
+import { useEffect } from 'react';
 
 const Home = () => {
-  const { posts } = useBlog();
+  const { posts, setPosts } = useBlog();
+
+  useEffect(() => {
+    (async () => {
+      setPosts(await getAllBlogs())
+    })()
+  }, [])
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      
+
       <main className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto mb-12 text-center">
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
@@ -20,8 +27,8 @@ const Home = () => {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
-          {posts.map((post) => (
-            <BlogCard key={post.id} post={post} />
+          {posts.map((post, index) => (
+            <BlogCard key={index} post={post} />
           ))}
         </div>
 

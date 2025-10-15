@@ -8,10 +8,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useEffect } from 'react';
 
 export const Navbar = () => {
-  const { user, logout } = useAuth();
+
+  const { user, me, logout } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      await me()
+    })()
+  }, [])
 
   const handleLogout = () => {
     logout();
@@ -39,7 +47,7 @@ export const Navbar = () => {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm">
                       <User className="mr-2 h-4 w-4" />
-                      {user.name}
+                      {user.username}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
