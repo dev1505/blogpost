@@ -86,6 +86,8 @@ const CreatePost = () => {
     }
   }
 
+  const str = "# 1st speech at college annual celebration\n\nIt feels absolutely surreal to be standing here today, addressing all of you at our College Annual Celebration. My heart is a strange mix of exhilaration and a tiny flutter of nerves, knowing this is my **first** time speaking on such an esteemed platform. Looking out at all your familiar faces – friends, faculty, and family – it truly feels like a culmination of so much.\n\nJust a few years ago, I walked through these gates, a fresh-faced newcomer, full of dreams and a little uncertainty. This college has not just been an institution of learning; it has been a second home, a crucible where friendships were forged, ideas were challenged, and personalities blossomed. Every lecture, every project, every late-night study session, and yes, even those unforgettable moments of shared laughter and camaraderie, have shaped the person I am today. We've learned not just from books, but from each other, from our mentors, and from every experience, big or small.\n\nThis annual celebration isn't just a day to mark the passage of another year; it's a moment to pause, reflect, and appreciate the vibrant tapestry we've all woven together. It's about celebrating our achievements, acknowledging our growth, and cheering on the spirit of community that binds us. To my fellow students, especially those just beginning their journey, I urge you to embrace every opportunity, to be curious, to be resilient, and most importantly, to be *you*. Don't be afraid to make mistakes, for they are often our greatest teachers.\n\nI want to extend my deepest gratitude to our incredible faculty members and the college administration for their unwavering support, guidance, and patience. Your dedication to nurturing young minds goes far beyond the curriculum. And to our parents and guardians, thank you for being our constant pillars of strength and for believing in us every step of the way.\n\nAs we look forward, let's carry the lessons learned and the bonds formed within these walls. Let's continue to inspire, innovate, and make a positive impact wherever we go. This moment, right here, right now, is a memory I will cherish forever.\n\nThank you.\n\n#1st #me"
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -144,7 +146,7 @@ const CreatePost = () => {
                 <Label htmlFor="content">Content</Label>
                 <div data-color-mode="auto">
                   <MDEditor
-                    value={content}
+                    value={str}
                     onChange={(val) => setContent(val || '')}
                     height={500}
                     preview="edit"

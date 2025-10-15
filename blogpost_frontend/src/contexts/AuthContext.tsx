@@ -1,9 +1,11 @@
+import { CommonApiCall, fastapi_backend_url } from '@/commonFunctions';
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface User {
-  id: string;
+  id?: string;
   email: string;
-  name: string;
+  name?: string;
+  password: string;
 }
 
 interface AuthContextType {
@@ -39,28 +41,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string): Promise<boolean> => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const mockUser: User = {
-      id: '1',
-      email,
-      name: email.split('@')[0],
-    };
-    
+
+    const mockUser: User = { email, password };
+
     setUser(mockUser);
-    localStorage.setItem('blog_user', JSON.stringify(mockUser));
-    return true;
+    const response = CommonApiCall({ url: fastapi_backend_url + "/login", type: "post", payload: mockUser })
+    console.log(fastapi_backend_url + "/login");
+
+    // localStorage.setItem('blog_user', JSON.stringify(mockUser));
+    // return true;
   };
 
   const signup = async (email: string, password: string, name: string): Promise<boolean> => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     const mockUser: User = {
       id: Date.now().toString(),
       email,
       name,
+      password
     };
-    
+
     setUser(mockUser);
     localStorage.setItem('blog_user', JSON.stringify(mockUser));
     return true;

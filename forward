@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+sudo nginx -c /etc/nginx/sites-available/setup.conf

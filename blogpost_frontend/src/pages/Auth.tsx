@@ -42,7 +42,7 @@ const Auth = () => {
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
-    const name = formData.get('name') as string;
+    const name = formData.get('username') as string;
 
     const success = await signup(email, password, name);
     
@@ -102,9 +102,9 @@ const Auth = () => {
             <TabsContent value="signup">
               <form onSubmit={handleSignup} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="signup-name">Name</Label>
+                  <Label htmlFor="signup-name">Username</Label>
                   <Input
-                    id="signup-name"
+                    id="username"
                     name="name"
                     type="text"
                     placeholder="John Doe"
