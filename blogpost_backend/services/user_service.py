@@ -33,7 +33,7 @@ class UserService:
 
     @staticmethod
     def generate_blog(blogs: Blog_Generate, db, user: User_Serializer) -> Blog_Create:
-        prompt = f"Generate a blog in markdown format such that title of the blog is {blogs.title} and related hashtags for the title are {blogs.hashtags}, don't use (markdown, ```) formatting, just give me best markdown format"
+        prompt = f"Generate a blog in markdown format such that title of the blog is {blogs.title} and related hashtags for the title are {blogs.hashtags}, don't use (markdown, ```) formatting, just give me best markdown format and also inlcude image links in it, give long content and also give emojis and symbols to make it interactive."
         response_from_ai = model.generate_content(prompt)
         generated_blog = Blog_Create(
             content=response_from_ai.text,

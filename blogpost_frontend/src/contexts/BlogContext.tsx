@@ -39,6 +39,7 @@ export const getAllBlogs = async () => {
   const response = await CommonApiCall({
     url: `${fastapi_backend_url}/get/all/blogs`,
     type: 'get',
+    publicPage: true,
   });
   return response;
 };
@@ -102,6 +103,7 @@ export const BlogProvider = ({ children }: { children: ReactNode }) => {
     const response = await CommonApiCall({
       url: `${fastapi_backend_url}/get/blog/${id}`,
       type: 'get',
+      publicPage: true,
     });
     return response;
   };

@@ -67,7 +67,7 @@ const PostDetail = () => {
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Button>
-          <Button
+          {post?.user && <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate(`/edit/blog/${id}`)}
@@ -75,7 +75,7 @@ const PostDetail = () => {
           >
             <FilePenLine />
             Edit
-          </Button>
+          </Button>}
         </div>
 
         <article className="prose prose-lg dark:prose-invert max-w-none">

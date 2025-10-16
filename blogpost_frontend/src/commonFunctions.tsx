@@ -4,11 +4,12 @@ export type ApiResquestType = {
     type: string;
     url: string;
     payload?: object;
+    publicPage?: boolean;
 }
 
 export const fastapi_backend_url = "https://effective-couscous-q59v65p6wgq2rj9-8001.app.github.dev/api"
 
-export async function CommonApiCall({ type = "get", payload = {}, url }: ApiResquestType) {
+export async function CommonApiCall({ type = "get", payload = {}, url, publicPage = false }: ApiResquestType) {
     try {
         let response;
         if (type === "get") {
@@ -35,7 +36,9 @@ export async function CommonApiCall({ type = "get", payload = {}, url }: ApiResq
                     window.location.href = "/"
                 }
             } catch (error) {
-                window.location.href = "/auth";
+                if (!publicPage) {
+                    window.location.href = "/auth";
+                }
             }
         }
         return false;
