@@ -26,9 +26,9 @@ const App = () => (
               <Route path="/" element={<Home />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/create" element={<CreatePost />} />
-              <Route path="/edit/post/:id" element={<CreatePost />} />
-              <Route path="/post/:id" element={<PostDetail />} />
-              <Route path="/my-posts" element={<MyPosts />} />
+              <Route path="/edit/blog/:id" element={<CreatePost />} />
+              <Route path="/blog/:id" element={<PostDetail />} />
+              <Route path="/my-blogs" element={<MyPosts />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

@@ -1,34 +1,40 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { useBlog } from '@/contexts/BlogContext';
+import { BlogPost, useBlog } from '@/contexts/BlogContext';
 import { Navbar } from '@/components/Navbar';
 import { BlogCard } from '@/components/BlogCard';
 import { Button } from '@/components/ui/button';
 import { PenSquare } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const MyPosts = () => {
   const { user } = useAuth();
-  const { getPostsByAuthor } = useBlog();
+  const { getBlogsByUser } = useBlog();
   const navigate = useNavigate();
 
-  if (!user) {
-    navigate('/auth');
-    return null;
-  }
+  // if (!user) {
+  //   navigate('/auth');
+  //   return null;
+  // }
 
-  const myPosts = getPostsByAuthor(user.id);
+  const [myPosts, setMyPosts] = useState<BlogPost[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      setMyPosts(await getBlogsByUser());
+    })()
+  }, [])
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      
       <main className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto mb-12">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-4xl font-bold mb-2">My Posts</h1>
               <p className="text-muted-foreground">
-                {myPosts.length} {myPosts.length === 1 ? 'post' : 'posts'} published
+                {myPosts?.length} {myPosts.length === 1 ? 'post' : 'posts'} published
               </p>
             </div>
             <Button onClick={() => navigate('/create')}>
@@ -38,7 +44,7 @@ const MyPosts = () => {
           </div>
         </div>
 
-        {myPosts.length > 0 ? (
+        {myPosts?.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
             {myPosts.map((post) => (
               <BlogCard key={post.id} post={post} />

@@ -12,8 +12,8 @@ interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<boolean>;
   signup: (email: string, password: string, name: string) => Promise<boolean>;
-  logout: () => void;
-  me: () => Promise<boolean>;
+  logout: () => Promise<boolean>;
+  me: () => Promise<User>;
   isLoading: boolean;
 }
 
@@ -61,16 +61,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return response;
   };
 
-  const me = async (): Promise<boolean> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
+  const me = async (): Promise<User> => {
     const response = await CommonApiCall({ url: fastapi_backend_url + "/get/user", type: "get" })
     setUser(response?.data)
     return response?.data;
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('blog_user');
+  const logout = async () => {
+    const response = await CommonApiCall({ url: fastapi_backend_url + "/logout", type: "get" })
+    return response?.success;
   };
 
   return (

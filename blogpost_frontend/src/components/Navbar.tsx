@@ -9,11 +9,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useEffect } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 export const Navbar = () => {
 
   const { user, me, logout } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast()
 
   useEffect(() => {
     (async () => {
@@ -21,9 +23,15 @@ export const Navbar = () => {
     })()
   }, [])
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
+  const handleLogout = async () => {
+    const response = await logout();
+    if (response) {
+      navigate("/auth")
+      toast({
+        toastType: "success",
+        description: "User Logged out successfully",
+      })
+    }
   };
 
   return (
@@ -51,8 +59,8 @@ export const Navbar = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => navigate('/my-posts')}>
-                      My Posts
+                    <DropdownMenuItem onClick={() => navigate('/my-blogs')}>
+                      My Blogs
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleLogout}>
                       <LogOut className="mr-2 h-4 w-4" />
