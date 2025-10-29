@@ -90,6 +90,13 @@ def generate_blog(
     return UserService.generate_blog(blogs=blogs, db=db, user=user)
 
 
+# @router.post("/generate/blog/cost", response_model=Blog_Create)
+# def generate_blog(
+#     blogs: Blog_Generate, db=Depends(database), user=Depends(AuthService.verify_user)
+# ):
+#     return UserService.generate_blog_with_cost(blogs=blogs, db=db, user=user)
+
+
 @router.get("/get/all/blogs")
 def get_blogs(db=Depends(database)):
     return UserService.all_blogs(db=db)
@@ -98,6 +105,13 @@ def get_blogs(db=Depends(database)):
 @router.get("/get/blog/{id}")
 def get_blog_by_id(id: str, db=Depends(database)):
     return UserService.get_blog_by_id(id=id, db=db)
+
+
+@router.get("/delete/blog/{id}")
+def delete_blog_by_id(
+    id: str, db=Depends(database), user=Depends(AuthService.verify_user)
+):
+    return UserService.delete_blog_by_id(id=id, db=db, user=user)
 
 
 @router.get("/get/user/blogs")

@@ -9,7 +9,7 @@ class User_Serializer(BaseModel):
     username: Optional[str] = None
     password: str
     email: str
-    user_cost: int = 0
+    user_cost: float = 0.0
     registration_time: str = str(datetime.now(timezone.utc).time())
 
 
@@ -31,6 +31,7 @@ class Blog_Create(BaseModel):
     generated_by_ai: bool = False
     post_time: str = str(datetime.now(timezone.utc).time())
     post_date: str = str(date.today())
+    user_cost: float = 0.0
 
 
 class Blog_Listing(Blog_Create):
