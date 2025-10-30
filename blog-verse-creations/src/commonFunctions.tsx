@@ -7,8 +7,7 @@ export type ApiRequestType = {
     publicPage?: boolean;
 };
 
-export const fastapi_backend_url =
-    "https://effective-couscous-q59v65p6wgq2rj9-8001.app.github.dev/api";
+export const fastapi_backend_url = process.env.fastapi_backend_url;
 
 export async function CommonApiCall({
     type = "get",
