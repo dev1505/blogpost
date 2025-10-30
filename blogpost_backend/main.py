@@ -64,7 +64,7 @@ def logout(request: Request, response: Response):
     return AuthService.logout_service(request=request, response=response)
 
 
-@router.get("/refresh", response_model=Token_Serializer)
+@router.get("/refresh")
 def refresh(request: Request, db=Depends(database)):
     return AuthService.refresh_token_service(db=db, request=request)
 
@@ -105,6 +105,11 @@ def get_blogs(db=Depends(database)):
 @router.get("/get/blog/{id}")
 def get_blog_by_id(id: str, db=Depends(database)):
     return UserService.get_blog_by_id(id=id, db=db)
+
+
+@router.get("/get/user/blogs/{username}")
+def get_blog_by_username(username: str, db=Depends(database)):
+    return UserService.get_blog_by_username(username=username, db=db)
 
 
 @router.get("/delete/blog/{id}")

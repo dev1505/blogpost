@@ -69,6 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     const response = await CommonApiCall({ url: fastapi_backend_url + "/logout", type: "get" })
+    setUser(null);
     return response?.success;
   };
 

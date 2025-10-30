@@ -33,7 +33,7 @@ class UserService:
 
     @staticmethod
     def generate_blog(blogs: Blog_Generate, db, user: User_Serializer) -> Blog_Create:
-        prompt = f"Generate a blog in markdown format such that title of the blog is {blogs.title} and related hashtags for the title are {blogs.hashtags}, don't use (markdown, ```) formatting, just give me best markdown format and also inlcude image links in it, give long content and also give emojis and symbols to make it interactive."
+        prompt = f"Generate a blog in markdown format such that title of the blog is {blogs.title} and related hashtags for the title are {blogs.hashtags}, don't use (markdown, ```) formatting, just give me best markdown format and also inlcude working image links in it, also generate more hashtags in it, give long content and also give emojis and symbols to make it interactive."
         response_from_ai = model.generate_content(prompt)
         user_cost = (
             response_from_ai.usage_metadata.prompt_token_count * 0.3 / 1000000
@@ -61,7 +61,14 @@ class UserService:
         return blog.model_dump()
 
     @staticmethod
-    def delete_blog_by_id(id: str, db, user: User_Serializer):
+    def get_blog_by_username(username: str, db):
+        blog_data = db.blogsData
+        blog_cursor = blog_data.find({"user.username": username})
+        blogs = List_Blogs(data=[{**doc, "id": str(doc["_id"])} for doc in blog_cursor])
+        return blogs.model_dump()
+
+    @staticmethod
+    def delete_blog_by_id(id: str, db):
         blog_data = db.blogsData
         blog_cursor = blog_data.find_one({"_id": ObjectId(id)})
         if not blog_cursor:
@@ -92,7 +99,6 @@ class UserService:
     @staticmethod
     def get_user_blogs(db, user: User_Serializer):
         blogs_data = db.blogsData
-        print(user)
         blogs_cursor = blogs_data.find({"user.username": user.username})
         blogs = List_Blogs(
             data=[{**doc, "id": str(doc["_id"])} for doc in blogs_cursor]

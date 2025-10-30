@@ -89,6 +89,11 @@ class AuthService:
     def refresh_token_service(request: Request, db):
         refresh_token = request.cookies.get("refresh_token")
         userData = db.userData
+        if not refresh_token:
+            return {
+                "message": "Refresh token not found",
+                "success": False,
+            }
         try:
             payload = jwt.decode(refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
             if payload.get("type") != "refresh":
@@ -144,22 +149,22 @@ class AuthService:
         )
 
     @staticmethod
-    def signup_service(user, db):
+    def signup_service(user: User_Serializer, db):
         userData = db.userData
-        existing_user = userData.find_one({"email": user.email})
-        print(existing_user)
+        existing_user = userData.find_one(
+            {"$or": [{"email": user.email}, {"username": user.username}]}
+        )
         if existing_user:
             raise HTTPException(
                 status_code=400,
                 detail="User already exists",
             )
-
         hashed_pw = AuthService.hash_password(user.password)
         user_dict = user.model_dump()
         user_dict["password"] = hashed_pw
 
         userData.insert_one(user_dict)
-        AuthService.login_service(user, db)
+        return AuthService.login_service(user, db)
 
     @staticmethod
     def logout_service(request: Request, response: Response):
