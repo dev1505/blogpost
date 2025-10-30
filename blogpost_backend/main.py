@@ -38,15 +38,22 @@ app = FastAPI(lifespan=lifespan)
 router = APIRouter()
 
 
+origins = [
+    "https://effective-couscous-q59v65p6wgq2rj9-8001.app.github.dev",
+    "https://blogpost-seven-kappa.vercel.app",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://effective-couscous-q59v65p6wgq2rj9-8001.app.github.dev",
-    ],
+    allow_origins=origins,          # Must match exactly
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# @app.options("/{rest_of_path:path}")
+# async def preflight_handler():
+#     return JSONResponse(content={"ok": True})
 
 
 @router.post("/login")
@@ -90,13 +97,6 @@ def generate_blog(
     return UserService.generate_blog(blogs=blogs, db=db, user=user)
 
 
-# @router.post("/generate/blog/cost", response_model=Blog_Create)
-# def generate_blog(
-#     blogs: Blog_Generate, db=Depends(database), user=Depends(AuthService.verify_user)
-# ):
-#     return UserService.generate_blog_with_cost(blogs=blogs, db=db, user=user)
-
-
 @router.get("/get/all/blogs")
 def get_blogs(db=Depends(database)):
     return UserService.all_blogs(db=db)
@@ -132,4 +132,4 @@ def get_blogs(user=Depends(AuthService.verify_user)):
     }
 
 
-app.include_router(router, prefix="/api")
+app.include_router(router)
