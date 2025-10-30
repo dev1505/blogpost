@@ -7,7 +7,7 @@ export type ApiRequestType = {
     publicPage?: boolean;
 };
 
-export const fastapi_backend_url = process.env.fastapi_backend_url;
+export const fastapi_backend_url = import.meta.env.VITE_FASTAPI_BACKEND_URL;
 
 export async function CommonApiCall({
     type = "get",
