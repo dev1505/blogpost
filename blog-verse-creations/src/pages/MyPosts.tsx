@@ -1,3 +1,4 @@
+import { frontend_url } from '@/commonFunctions';
 import { BlogCard } from '@/components/BlogCard';
 import { Navbar } from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
@@ -38,10 +39,10 @@ const MyPosts = () => {
               <div className='font-bold'>
                 Share Your Blogs : <span
                   onClick={() => {
-                    window.open(`https://effective-couscous-q59v65p6wgq2rj9-8001.app.github.dev/user/blogs/${user?.username}`, "_blank")
+                    window.open(`${frontend_url}/user/blogs/${user?.username}`, "_blank")
                   }}
                   className='cursor-pointer italic hover:text-blue-600'
-                >https://effective-couscous-q59v65p6wgq2rj9-8001.app.github.dev/user/blogs/{user?.username}</span>
+                >{frontend_url}/user/blogs/{user?.username}</span>
               </div>
               <div className=''>
                 <span className='text-2xl font-bold bg-purple-200 p-2 rounded'>Cost : ${user?.user_cost && user?.user_cost?.toFixed(5)}</span>

@@ -1,13 +1,14 @@
-from fastapi import FastAPI, Depends, Response, Request, APIRouter
 import os
-from dotenv import load_dotenv
 from contextlib import asynccontextmanager
-from services.auth_service import *
-from Schema.all_schema import *
-from services.user_service import *
-from dependencies import *
+
+from dotenv import load_dotenv
+from fastapi import APIRouter, Depends, FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
+from dependencies import *
+from Schema.all_schema import *
+from services.auth_service import *
+from services.user_service import *
 
 load_dotenv()
 
@@ -41,19 +42,16 @@ router = APIRouter()
 origins = [
     "https://effective-couscous-q59v65p6wgq2rj9-8001.app.github.dev",
     "https://blogpost-seven-kappa.vercel.app",
+    "http://localhost:8080",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,          # Must match exactly
+    allow_origins=origins,  # Must match exactly
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# @app.options("/{rest_of_path:path}")
-# async def preflight_handler():
-#     return JSONResponse(content={"ok": True})
 
 
 @router.post("/login")

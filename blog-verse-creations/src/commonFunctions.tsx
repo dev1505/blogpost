@@ -8,6 +8,7 @@ export type ApiRequestType = {
 };
 
 export const fastapi_backend_url = import.meta.env.VITE_FASTAPI_BACKEND_URL;
+export const frontend_url = import.meta.env.VITE_FRONTEND_URL;
 
 export async function CommonApiCall({
     type = "get",
